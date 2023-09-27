@@ -1,0 +1,77 @@
+.order-cart {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  background-color: #fff;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cart-table {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.cart-total {
+  margin-top: 16px;
+  text-align: right;
+}
+
+button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.search-and-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.search-container input[type="text"] {
+  padding: 8px;
+  border: none;
+  width: 200px;
+  outline: none;
+}
+.search-icon {
+  padding: 8px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+.search-icon:hover {
+  background-color: #0056b3;
+}
