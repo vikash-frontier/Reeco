@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Modal.css";
 
 const initialState = {
@@ -9,7 +9,7 @@ const initialState = {
   errorMessage: "",
 };
 
-const Modal = ({ isOpen, onClose, onSubmit }) => {
+const Modal = ({ isOpen, onClose, onSubmit, editItem }) => {
   const [formData, setFormData] = useState(initialState);
 
   const handleChange = (e) => {
@@ -20,6 +20,20 @@ const Modal = ({ isOpen, onClose, onSubmit }) => {
     }));
   };
 
+  useEffect(() => {
+    if (editItem) {
+      setFormData({
+        itemName: editItem.productName,
+        itemBrand: editItem.brand,
+        itemPrice: String(editItem.price),
+        itemQuantity: String(editItem.quantity),
+        errorMessage: "",
+      });
+    } else {
+      setFormData(initialState);
+    }
+  }, [editItem]);
+
   const handleSubmit = () => {
     const { itemName, itemBrand, itemPrice, itemQuantity } = formData;
 
@@ -28,17 +42,26 @@ const Modal = ({ isOpen, onClose, onSubmit }) => {
       return;
     }
 
+    if (editItem) {
+      editItem.productName = itemName;
+      editItem.brand = itemBrand;
+      editItem.price = parseFloat(itemPrice);
+      editItem.quantity = parseInt(itemQuantity);
+
+      onSubmit(editItem);
+    } else {
+      const newItem = {
+        id: Math.random(),
+        productName: itemName,
+        brand: itemBrand,
+        price: parseFloat(itemPrice),
+        quantity: parseInt(itemQuantity),
+      };
+
+      onSubmit(newItem);
+    }
+
     setFormData(initialState);
-
-    const newItem = {
-      id: Math.random(),
-      productName: itemName,
-      brand: itemBrand,
-      price: parseFloat(itemPrice),
-      quantity: parseInt(itemQuantity),
-    };
-
-    onSubmit(newItem);
     onClose();
   };
 
@@ -85,7 +108,7 @@ const Modal = ({ isOpen, onClose, onSubmit }) => {
             onChange={handleChange}
           />
         </label>
-        <button onClick={handleSubmit}>Add</button>
+        <button onClick={handleSubmit}>{editItem ? "Update" : "Add"}</button>
         <button onClick={onClose}>Cancel</button>
       </div>
     </div>

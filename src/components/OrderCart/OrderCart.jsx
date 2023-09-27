@@ -40,7 +40,8 @@ const OrderCart = () => {
   };
 
   const handleEdit = (item) => {
-    setEditItem(item);
+    const editedItem = { ...item };
+    setEditItem(editedItem);
     setIsModalOpen(true);
   };
 
@@ -80,7 +81,6 @@ const OrderCart = () => {
     <>
       <OrderHeader total={calculateTotal()} />
       <div className="order-cart">
-        <h1>Order Cart</h1>
         <div className="search-and-add">
           <div className="search-container">
             <input
@@ -108,7 +108,14 @@ const OrderCart = () => {
             <tbody>
               {filteredCart.map((item) => (
                 <tr key={item.id}>
-                  <td>{item.productName}</td>
+                  <td className="product-name">
+                    <img
+                      className="fruit-img"
+                      src={item.img}
+                      alt="fruits_img"
+                    />
+                    <span>{item.productName}</span>
+                  </td>
                   <td>{item.brand}</td>
                   <td>${item.price.toFixed(2)}</td>
                   <td>{item.quantity}</td>
@@ -131,10 +138,14 @@ const OrderCart = () => {
                         handleSave(item);
                       }}
                     >
-                      <AiOutlineCheck />
+                      <AiOutlineCheck
+                        color={item.status === "Approved" ? "green" : "black"}
+                      />
                     </button>
                     <button className="btn" onClick={() => handleRemove(item)}>
-                      <AiOutlineClose />
+                      <AiOutlineClose
+                        color={item.status === "Missing" ? "red" : "black"}
+                      />
                     </button>
                     <button className="btn" onClick={() => handleEdit(item)}>
                       edit
@@ -149,6 +160,7 @@ const OrderCart = () => {
           isOpen={isModalOpen}
           onClose={closeModal}
           onSubmit={addItemToCart}
+          editItem={editItem} // Pass the editItem state
         />
       </div>
     </>

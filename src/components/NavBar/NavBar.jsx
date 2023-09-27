@@ -3,15 +3,17 @@ import "./NavBar.css";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-
 import { IoIosArrowDown } from "react-icons/io";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [cartCount, setCartCount] = useState(0);
+  const cartItem = useSelector((state) => state.cart);
+
   const username = "Vikash";
 
   const activeLinkStyle = {
-    backgroundColor: "#007bff",
+    backgroundColor: "red",
     color: "#fff",
   };
 
@@ -40,7 +42,7 @@ const Navbar = () => {
       <div className="right">
         <NavLink to="/orders" className="cart-icon">
           <FontAwesomeIcon icon={faShoppingCart} />
-          <span className="cart-count">{cartCount}</span>
+          <span className="cart-count">{cartItem.length}</span>
         </NavLink>
         <div className="user">
           {`Hello ${username}`}

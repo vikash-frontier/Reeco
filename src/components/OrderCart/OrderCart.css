@@ -24,6 +24,9 @@ td {
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
+.cart-table td:last-child {
+  border: none;
+}
 
 th {
   background-color: #f2f2f2;
@@ -36,15 +39,15 @@ th {
 
 button {
   padding: 8px 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
+  color: green;
+  border: 1px solid green;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 15px;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: green;
+  color: white;
 }
 
 .search-and-add {
@@ -57,7 +60,7 @@ button:hover {
   display: flex;
   align-items: center;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 15px;
   overflow: hidden;
 }
 .search-container input[type="text"] {
@@ -68,12 +71,7 @@ button:hover {
 }
 .search-icon {
   padding: 8px;
-  background-color: #007bff;
-  color: #fff;
   cursor: pointer;
-}
-.search-icon:hover {
-  background-color: #0056b3;
 }
 
 .btn {
@@ -89,7 +87,7 @@ button:hover {
   background-color: green;
   color: white;
   font-family: sans-serif;
-  font-size: medium;
+  font-size: 14px;
   padding: 4px 8px;
   border-radius: 10px;
 }
@@ -97,7 +95,17 @@ button:hover {
   background-color: red;
   color: white;
   font-family: sans-serif;
-  font-size: medium;
+  font-size: 14px;
   padding: 4px 8px;
   border-radius: 10px;
+}
+.fruit-img {
+  width: 50px;
+  height: 50px;
+}
+.product-name {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 5px;
 }
