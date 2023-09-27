@@ -1,26 +1,34 @@
 import React, { useState } from "react";
 import "./Modal.css";
 
+const initialState = {
+  itemName: "",
+  itemBrand: "",
+  itemPrice: "",
+  itemQuantity: "",
+  errorMessage: "",
+};
+
 const Modal = ({ isOpen, onClose, onSubmit }) => {
-  const [itemName, setItemName] = useState("");
-  const [itemBrand, setItemBrand] = useState("");
-  const [itemPrice, setItemPrice] = useState("");
-  const [itemQuantity, setItemQuantity] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [formData, setFormData] = useState(initialState);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = () => {
-    setErrorMessage("");
-    setItemName("");
-    setItemBrand("");
-    setItemPrice("");
-    setItemQuantity("");
+    const { itemName, itemBrand, itemPrice, itemQuantity } = formData;
 
     if (!itemName || !itemBrand || !itemPrice || !itemQuantity) {
-      setErrorMessage("Please fill in all fields.");
+      setFormData({ ...formData, errorMessage: "Please fill in all fields." });
       return;
     }
 
-    setErrorMessage("");
+    setFormData(initialState);
 
     const newItem = {
       id: Math.random(),
@@ -38,37 +46,43 @@ const Modal = ({ isOpen, onClose, onSubmit }) => {
     <div className={`modal ${isOpen ? "open" : ""}`}>
       <div className="modal-content">
         <h2>Add Item</h2>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        {formData.errorMessage && (
+          <p className="error-message">{formData.errorMessage}</p>
+        )}
         <label>
           Product Name:
           <input
             type="text"
-            value={itemName}
-            onChange={(e) => setItemName(e.target.value)}
+            name="itemName"
+            value={formData.itemName}
+            onChange={handleChange}
           />
         </label>
         <label>
           Brand:
           <input
             type="text"
-            value={itemBrand}
-            onChange={(e) => setItemBrand(e.target.value)}
+            name="itemBrand"
+            value={formData.itemBrand}
+            onChange={handleChange}
           />
         </label>
         <label>
           Price:
           <input
             type="number"
-            value={itemPrice}
-            onChange={(e) => setItemPrice(e.target.value)}
+            name="itemPrice"
+            value={formData.itemPrice}
+            onChange={handleChange}
           />
         </label>
         <label>
           Quantity:
           <input
             type="number"
-            value={itemQuantity}
-            onChange={(e) => setItemQuantity(e.target.value)}
+            name="itemQuantity"
+            value={formData.itemQuantity}
+            onChange={handleChange}
           />
         </label>
         <button onClick={handleSubmit}>Add</button>

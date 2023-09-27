@@ -4,14 +4,15 @@ import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
+import { IoIosArrowDown } from "react-icons/io";
+
 const Navbar = () => {
-  const [cartCount, setCartCount] = useState(0); // Example cart count, you can update this as needed
-  const username = "John Doe"; // Example username, you can replace it with the actual username
+  const [cartCount, setCartCount] = useState(0);
+  const username = "Vikash";
 
   const activeLinkStyle = {
-    backgroundColor: "#007bff", // Example background color for the active link
-    color: "#fff", // Example text color for the active link
-    // Add any other styles you want for the active link
+    backgroundColor: "#007bff",
+    color: "#fff",
   };
 
   return (
@@ -41,7 +42,10 @@ const Navbar = () => {
           <FontAwesomeIcon icon={faShoppingCart} />
           <span className="cart-count">{cartCount}</span>
         </NavLink>
-        <div className="user">{username}</div>
+        <div className="user">
+          {`Hello ${username}`}
+          <IoIosArrowDown />
+        </div>
       </div>
     </div>
   );

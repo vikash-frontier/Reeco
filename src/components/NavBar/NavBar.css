@@ -45,5 +45,10 @@
 }
 
 .user {
-  font-weight: bold;
+  font-weight: 200;
+  font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }

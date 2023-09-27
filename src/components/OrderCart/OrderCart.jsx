@@ -1,37 +1,27 @@
 import React, { useState, useEffect } from "react";
 import "./OrderCart.css";
 import Modal from "../Modal/Modal";
-import { FaSearch, FaSave, FaTrash, FaEdit } from "react-icons/fa"; // Import icons
+import { useSelector, useDispatch } from "react-redux";
 
-const mockData = [
-  {
-    id: 1,
-    productName: "Product A",
-    brand: "Brand X",
-    price: 10.99,
-    quantity: 2,
-  },
-  {
-    id: 2,
-    productName: "Product B",
-    brand: "Brand Y",
-    price: 19.99,
-    quantity: 1,
-  },
-  {
-    id: 3,
-    productName: "Product C",
-    brand: "Brand Z",
-    price: 7.49,
-    quantity: 3,
-  },
-];
+import { FaSearch, FaSave, FaTrash, FaEdit } from "react-icons/fa";
+import {
+  addItem,
+  updateItem,
+  removeItem,
+  updateStatus,
+} from "../../store/cartSlice";
+import OrderHeader from "../OrderHeader/OrderHeader";
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 
 const OrderCart = () => {
-  const [cart, setCart] = useState(mockData);
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCart, setFilteredCart] = useState([]);
+  const [editItem, setEditItem] = useState(null);
+
+  console.log(cart);
 
   useEffect(() => {
     const filteredItems = cart.filter((item) =>
@@ -49,22 +39,33 @@ const OrderCart = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  // const addItemToCart = () => {
-  //   // You can add your logic to add an item to the cart here.
-  //   // For simplicity, let's add a new item with a random name and price.
-  //   const newItem = {
-  //     id: Math.random(),
-  //     productName: `New Product ${Math.floor(Math.random() * 100)}`,
-  //     brand: "Brand New",
-  //     price: Math.random() * 100,
-  //     quantity: 1,
-  //   };
+  const handleEdit = (item) => {
+    setEditItem(item);
+    setIsModalOpen(true);
+  };
 
-  //   setCart([...cart, newItem]);
-  // };
+  const handleSave = (item) => {
+    console.log(item);
+    dispatch(updateItem(item));
+    const message = `Approved`;
+    dispatch(updateStatus({ id: item.id, message }));
+    setIsModalOpen(false);
+    setEditItem(null);
+  };
 
-  const addItemToCart = (newItem) => {
-    setCart([...cart, newItem]);
+  const handleRemove = (item) => {
+    console.log(item);
+
+    dispatch(updateItem(item));
+    const message = `Missing`;
+    dispatch(updateStatus({ id: item.id, message }));
+
+    // dispatch(removeItem(item.id));
+  };
+
+  const addItemToCart = (item) => {
+    dispatch(addItem(item));
+    setIsModalOpen(false);
   };
 
   const openModal = () => {
@@ -76,75 +77,81 @@ const OrderCart = () => {
   };
 
   return (
-    <div className="order-cart">
-      <h1>Order Cart</h1>
-      <div className="search-and-add">
-        <div className="search-container">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-          <FaSearch className="search-icon" />
+    <>
+      <OrderHeader total={calculateTotal()} />
+      <div className="order-cart">
+        <h1>Order Cart</h1>
+        <div className="search-and-add">
+          <div className="search-container">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            <FaSearch className="search-icon" />
+          </div>
+          <button onClick={openModal}>Add Item</button>
         </div>
-        <button onClick={openModal}>Add Item</button>
-      </div>
-      <div className="cart-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Product Name</th>
-              <th>Brand</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Total</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredCart.map((item) => (
-              <tr key={item.id}>
-                <td>{item.productName}</td>
-                <td>{item.brand}</td>
-                <td>${item.price.toFixed(2)}</td>
-                <td>{item.quantity}</td>
-                <td>${(item.price * item.quantity).toFixed(2)}</td>
-                <td>
-                  <button
-                    className="status-button"
-                    onClick={() => handleEdit(item)}
-                  >
-                    <FaEdit />
-                  </button>
-                  <button
-                    className="status-button"
-                    onClick={() => handleSave(item)}
-                  >
-                    <FaSave />
-                  </button>
-                  <button
-                    className="status-button"
-                    onClick={() => handleRemove(item)}
-                  >
-                    <FaTrash />
-                  </button>
-                </td>
+        <div className="cart-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredCart.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.productName}</td>
+                  <td>{item.brand}</td>
+                  <td>${item.price.toFixed(2)}</td>
+                  <td>{item.quantity}</td>
+                  <td>${(item.price * item.quantity).toFixed(2)}</td>
+                  <td>
+                    {item.status !== "" && (
+                      <span
+                        className={`${
+                          item.status === "Approved" ? "approved" : "missing"
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    )}
+
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        console.log(item, "Item");
+                        handleSave(item);
+                      }}
+                    >
+                      <AiOutlineCheck />
+                    </button>
+                    <button className="btn" onClick={() => handleRemove(item)}>
+                      <AiOutlineClose />
+                    </button>
+                    <button className="btn" onClick={() => handleEdit(item)}>
+                      edit
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          onSubmit={addItemToCart}
+        />
       </div>
-      <div className="cart-total">
-        <p>Total: ${calculateTotal().toFixed(2)}</p>
-        <button>Checkout</button>
-      </div>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onSubmit={addItemToCart}
-      />
-    </div>
+    </>
   );
 };
 

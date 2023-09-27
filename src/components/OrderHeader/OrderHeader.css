@@ -1,0 +1,35 @@
+.order-header {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  background-color: #f2f2f2;
+  font-weight: bold;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  background-color: #fff;
+  max-width: 80%;
+  margin: 30px auto;
+}
+
+.order-header-item {
+  text-align: center;
+  padding: 8px;
+  border-right: 1px solid gray;
+}
+.order-header .order-header-item:last-child {
+  border: none;
+}
+
+.order-header-item.total {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+.text {
+  color: grey;
+  font-size: medium;
+  font-weight: 200;
+}

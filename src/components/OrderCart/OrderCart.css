@@ -4,8 +4,8 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 16px;
   background-color: #fff;
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 80%;
+  margin: 30px auto;
 }
 
 .cart-table {
@@ -74,4 +74,30 @@ button:hover {
 }
 .search-icon:hover {
   background-color: #0056b3;
+}
+
+.btn {
+  border: none;
+  background-color: white;
+  color: black;
+}
+.btn:hover {
+  background-color: #fff;
+}
+
+.approved {
+  background-color: green;
+  color: white;
+  font-family: sans-serif;
+  font-size: medium;
+  padding: 4px 8px;
+  border-radius: 10px;
+}
+.missing {
+  background-color: red;
+  color: white;
+  font-family: sans-serif;
+  font-size: medium;
+  padding: 4px 8px;
+  border-radius: 10px;
 }
